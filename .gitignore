@@ -13,6 +13,7 @@ Untitled Folder/
 .terraform/
 *.tfstate
 .terraform*
+terraform.*.backup
 
 # Distribution / packaging
 .Python
