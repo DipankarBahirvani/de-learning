@@ -33,7 +33,16 @@ def write_data(engine, csv_name):
         data["tpep_pickup_datetime"] = pd.to_datetime(data["tpep_pickup_datetime"])
         data["tpep_dropoff_datetime"] = pd.to_datetime(data["tpep_dropoff_datetime"])
         data.to_sql(name="yellow_taxi_table", con=engine, if_exists="append")
-        break
+
+
+def write_zonal_data(engine, csv_name):
+    df_iter = pd.read_csv(f"test_data/{csv_name}", chunksize=100,
+                          iterator=True)
+    # df = next(df_iter)
+
+    # df.head(n=0).to_sql(name="zones", con=engine, if_exists="replace")
+    for data in df_iter:
+        data.to_sql(name="zones", con=engine, if_exists="append")
 
 
 if __name__ == '__main__':
@@ -53,7 +62,15 @@ if __name__ == '__main__':
 
     parser.add_argument('--url', type=str,
                         help='url of data souce')
+
+    parser.add_argument('--url1', type=str,
+                        help='url of data souce')
+
     args = parser.parse_args()
     engine = connect_to_db(args)
-    csv_name = get_data(args.url)
-    write_data(engine, csv_name)
+    if args.url:
+        csv_name = get_data(args.url)
+        write_data(engine, csv_name)
+    if args.url1:
+        csv_name = get_data(args.url1)
+        write_zonal_data(engine, csv_name)
