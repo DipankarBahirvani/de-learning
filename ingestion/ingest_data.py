@@ -10,7 +10,9 @@ def connect_to_db(args):
     username = args.username
     port = args.port
     db_name = args.database
-    engine = db.create_engine(f"postgresql://{username}:{password}@{host}:{port}/{db_name}")
+    engine = db.create_engine(
+        f"postgresql://{username}:{password}@{host}:{port}/{db_name}"
+    )
     return engine
 
 
@@ -23,8 +25,7 @@ def get_data(url):
 
 
 def write_data(engine, csv_name):
-    df_iter = pd.read_csv(f"test_data/{csv_name}", chunksize=10000,
-                          iterator=True)
+    df_iter = pd.read_csv(f"test_data/{csv_name}", chunksize=10000, iterator=True)
     df = next(df_iter)
     df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
     df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
@@ -36,8 +37,7 @@ def write_data(engine, csv_name):
 
 
 def write_zonal_data(engine, csv_name):
-    df_iter = pd.read_csv(f"test_data/{csv_name}", chunksize=100,
-                          iterator=True)
+    df_iter = pd.read_csv(f"test_data/{csv_name}", chunksize=100, iterator=True)
     # df = next(df_iter)
 
     # df.head(n=0).to_sql(name="zones", con=engine, if_exists="replace")
@@ -45,26 +45,19 @@ def write_zonal_data(engine, csv_name):
         data.to_sql(name="zones", con=engine, if_exists="append")
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Intgest Data to DB')
-    parser.add_argument('--host', type=str,
-                        help='host of database')
-    parser.add_argument('--port', type=int,
-                        help='port number of database')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Intgest Data to DB")
+    parser.add_argument("--host", type=str, help="host of database")
+    parser.add_argument("--port", type=int, help="port number of database")
 
-    parser.add_argument('--username', type=str,
-                        help='username of database')
+    parser.add_argument("--username", type=str, help="username of database")
 
-    parser.add_argument('--password', type=str,
-                        help='password of database')
-    parser.add_argument('--database', type=str,
-                        help='name of database')
+    parser.add_argument("--password", type=str, help="password of database")
+    parser.add_argument("--database", type=str, help="name of database")
 
-    parser.add_argument('--url', type=str,
-                        help='url of data souce')
+    parser.add_argument("--url", type=str, help="url of data souce")
 
-    parser.add_argument('--url1', type=str,
-                        help='url of data souce')
+    parser.add_argument("--url1", type=str, help="url of data souce")
 
     args = parser.parse_args()
     engine = connect_to_db(args)

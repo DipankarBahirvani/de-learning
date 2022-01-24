@@ -1,6 +1,19 @@
-select count(*) from yellow_taxi_table  where CAST(yellow_taxi_table.tpep_pickup_datetime AS DATE)= '2021-01-15' ;
+SELECT count(*)
+FROM yellow_taxi_table
+WHERE CAST(yellow_taxi_table.tpep_pickup_datetime AS DATE)= '2021-01-15' ;
 
-select MAX(tip_amount) as max_tip, DATE(yellow_taxi_table.tpep_pickup_datetime)  from yellow_taxi_table  GROUP BY DATE(yellow_taxi_table.tpep_pickup_datetime) order by max_tip desc
+SELECT MAX(tip_amount) AS max_tip,
+       DATE(yellow_taxi_table.tpep_pickup_datetime)
+FROM yellow_taxi_table
+GROUP BY DATE(yellow_taxi_table.tpep_pickup_datetime)
+ORDER BY max_tip DESC
 
-select avg(a.fare_amount) as amount,concat_ws('//',b."Zone",c."Zone") as location from yellow_taxi_table a, zones b, zones c where a."PULocationID"=b."LocationID" and
-a."DOLocationID"=c."LocationID" group by concat_ws('//',b."Zone",c."Zone") order by amount desc
+SELECT avg(a.fare_amount) AS amount,
+       concat_ws('//', b."Zone", c."Zone") AS LOCATION
+FROM yellow_taxi_table a,
+     zones b,
+     zones c
+WHERE a."PULocationID"=b."LocationID"
+  AND a."DOLocationID"=c."LocationID"
+GROUP BY concat_ws('//', b."Zone", c."Zone")
+ORDER BY amount DESC
