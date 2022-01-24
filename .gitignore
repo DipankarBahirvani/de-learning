@@ -6,6 +6,14 @@ __pycache__/
 # C extensions
 *.so
 
+# data
+data/
+test_data/
+Untitled Folder/
+.terraform/
+*.tfstate
+.terraform*
+
 # Distribution / packaging
 .Python
 build/
